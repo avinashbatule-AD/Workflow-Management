@@ -1,0 +1,27 @@
+<form [formGroup]="workflowForm" (ngSubmit)="onSubmit()">
+  <input formControlName="name" placeholder="Workflow Name" />
+
+  <div *ngIf="workflowForm.get('name')?.errors?.['nameTaken']">
+    Name already exists
+  </div>
+
+  <select formControlName="priority">
+    <option>Low</option>
+    <option>Medium</option>
+    <option>High</option>
+  </select>
+
+  <select formControlName="status">
+    <option>Draft</option>
+    <option>In Review</option>
+    <option>Approved</option>
+    <option>Rejected</option>
+  </select>
+
+  <input formControlName="assignedUsers" placeholder="Assigned Users (comma separated)" />
+  <input type="date" formControlName="dueDate" />
+
+  <button type="submit">
+    {{ editing ? 'Update' : 'Create' }}
+  </button>
+</form>

@@ -1,0 +1,26 @@
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Priority</th>
+      <th>Status</th>
+      <th>Assigned Users</th>
+      <th>Due Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let wf of workflows$ | async; trackBy: trackById">
+      <td>{{ wf.name }}</td>
+      <td>{{ wf.priority }}</td>
+      <td>{{ wf.status }}</td>
+      <td>{{ wf.assignedUsers.join(', ') }}</td>
+      <td>{{ wf.dueDate | date }}</td>
+      <td>
+        <button [routerLink]="['/workflows/edit', wf.id]">Edit</button>
+        <button (click)="deleteWorkflow(wf.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

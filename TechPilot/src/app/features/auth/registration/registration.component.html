@@ -1,0 +1,27 @@
+<p>registration works!</p>
+<div class="register-container">
+  <h2>Register</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <label>
+      Username:
+      <input formControlName="username" />
+    </label>
+    <label>
+      Email:
+      <input formControlName="email" type="email" />
+    </label>
+    <label>
+      Password:
+      <input formControlName="password" type="password" />
+    </label>
+    <label>
+      Role:
+      <select formControlName="role">
+        <option>User</option>
+        <option>Manager</option>
+        <option>Admin</option>
+      </select>
+    </label>
+    <button type="submit" [disabled]="registerForm.invalid">Register</button>
+  </form>
+</div>

@@ -1,0 +1,46 @@
+<div *ngIf="loading">Loading workflow...</div>
+
+<form [formGroup]="workflowForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+  <h2>Edit Workflow</h2>
+
+  <label>
+    Name:
+    <input formControlName="name" placeholder="Workflow Name" />
+  </label>
+  
+  <!-- Use bracket notation to access 'nameTaken' error -->
+  <div *ngIf="workflowForm.get('name')?.errors?.['nameTaken']" class="error">
+    Name already exists!
+  </div>
+
+  <label>
+    Priority:
+    <select formControlName="priority">
+      <option>Low</option>
+      <option>Medium</option>
+      <option>High</option>
+    </select>
+  </label>
+
+  <label>
+    Status:
+    <select formControlName="status">
+      <option>Draft</option>
+      <option>In Review</option>
+      <option>Approved</option>
+      <option>Rejected</option>
+    </select>
+  </label>
+
+  <label>
+    Assigned Users (comma separated):
+    <input formControlName="assignedUsers" placeholder="user1, user2" />
+  </label>
+
+  <label>
+    Due Date:
+    <input type="date" formControlName="dueDate" />
+  </label>
+
+  <button type="submit" [disabled]="workflowForm.invalid">Update Workflow</button>
+</form>

@@ -1,0 +1,22 @@
+<h2>Dashboard</h2>
+
+<canvas #chartCanvas width="500" height="300"></canvas>
+
+<p>Total Workflows: {{ totalWorkflows }}</p>
+<p>Overdue Workflows: {{ overdueWorkflows }}</p>
+ 
+<!-- <h2>Dashboard</h2>
+
+<div>
+  <p>Total Workflows: {{ totalWorkflows$ | async }}</p>
+  <p>Overdue Workflows: {{ overdueWorkflows$ | async }}</p>
+  <p>Average Completion Time (days): {{ averageCompletionTime$ | async | number:'1.0-1' }}</p>
+</div>
+
+<div style="width: 400px; height: 300px;">
+  <canvas baseChart
+          [data]="[totalWorkflows$ | async, overdueWorkflows$ | async]"
+          [labels]="['Total', 'Overdue']"
+          [chartType]="'doughnut'">
+  </canvas>
+</div> -->
