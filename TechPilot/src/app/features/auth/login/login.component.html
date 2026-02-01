@@ -1,9 +1,26 @@
+
 <div class="login-container">
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <h2>Login</h2>
+
+    <h2>{{ isSignup ? 'Sign Up' : 'Login' }}</h2>
+
     <input formControlName="username" placeholder="Username" />
+    <input *ngIf="isSignup" formControlName="email" placeholder="Email" type="email" />
+    <select *ngIf="isSignup" formControlName="role">
+      <option value="" disabled>Select Role</option>
+      <option *ngFor="let r of rolesList" [value]="r">{{ r | titlecase }}</option>
+    </select>
     <input type="password" formControlName="password" placeholder="Password" />
-    <button type="submit">Login</button>
+    <input *ngIf="isSignup" type="password" formControlName="confirmPassword" placeholder="Confirm Password" />
+
+    <button type="submit">{{ isSignup ? 'Create Account' : 'Login' }}</button>
+
     <p *ngIf="error" class="error">{{ error }}</p>
+
+    <p class="toggle">
+      {{ isSignup ? 'Already have an account?' : "Don't have an account?" }}
+      <a (click)="toggleMode()">{{ isSignup ? 'Login' : 'Sign up' }}</a>
+    </p>
+
   </form>
 </div>

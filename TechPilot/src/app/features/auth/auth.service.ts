@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 
-export interface AuthResponse {
-  token: string;
+import { Injectable } from '@angular/core';
+
+export interface User {
+  username: string;
+  email: string;
+  password: string;
   role: string;
 }
 
@@ -12,56 +12,61 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private authUrl = 'https://your-api-url.com/auth';  // Replace with your API URL
-  private isAuthenticatedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private userRoleSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
-  constructor(private http: HttpClient, private router: Router) {
-    const token = localStorage.getItem('token');
-    if (token) {
-      this.isAuthenticatedSubject.next(true);
-      this.userRoleSubject.next(localStorage.getItem('role'));
+  private localStorageKey = 'users';
+  private currentUserKey = 'currentUser';
+
+  constructor() {}
+
+  // Signup: save user to localStorage
+  signup(user: User): boolean {
+    const users: User[] = JSON.parse(localStorage.getItem(this.localStorageKey) || '[]');
+
+    // Check if username already exists
+    if (users.find(u => u.username === user.username)) {
+      return false; // username taken
     }
-  }
-register(userData: { username: string; email: string; password: string; role: string }) {
-  // Mocked registration API call
-  return new Observable(observer => {
-    console.log('User registered:', userData);
-    setTimeout(() => {
-      observer.next({ success: true });
-      observer.complete();
-    }, 500);
-  });
 
-  // For real API:
-  // return this.http.post(`${this.authUrl}/register`, userData);
-}
-
-  login(username: string, password: string): Observable<any> {
-    return this.http.post<AuthResponse>(`${this.authUrl}/login`, { username, password }).pipe(  // Use AuthResponse interface here
-      tap(response => {
-        localStorage.setItem('token', response.token);  // Now TypeScript knows token is a string
-        localStorage.setItem('role', response.role);    // And role is a string
-        this.isAuthenticatedSubject.next(true);
-        this.userRoleSubject.next(response.role);
-        this.router.navigate(['/dashboard']);
-      })
-    );
+    users.push(user);
+    localStorage.setItem(this.localStorageKey, JSON.stringify(users));
+    localStorage.setItem(this.currentUserKey, JSON.stringify(user)); // auto-login after signup
+    return true;
   }
 
+  // Login: check username/password
+  login(username: string, password: string): boolean {
+    const users: User[] = JSON.parse(localStorage.getItem(this.localStorageKey) || '[]');
+
+    const user = users.find(u => u.username === username && u.password === password);
+    if (user) {
+      localStorage.setItem(this.currentUserKey, JSON.stringify(user));
+      return true;
+    }
+    return false;
+  }
+
+  // Check if user is logged in
+  isLoggedIn(): boolean {
+    return localStorage.getItem(this.currentUserKey) !== null;
+  }
+
+  // Get current logged-in user
+  getCurrentUser(): User | null {
+    return JSON.parse(localStorage.getItem(this.currentUserKey) || 'null');
+  }
+
+  // Logout
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    this.isAuthenticatedSubject.next(false);
-    this.userRoleSubject.next(null);
-    this.router.navigate(['/login']);
+    localStorage.removeItem(this.currentUserKey);
   }
 
-  isAuthenticated(): Observable<boolean> {
-    return this.isAuthenticatedSubject.asObservable();
-  }
-
-  getRole(): Observable<string | null> {
-    return this.userRoleSubject.asObservable();
+  // Get current user role
+  getRole(): string | null {
+    const user = this.getCurrentUser();
+    return user?.role || null;
   }
 }
+
+
+
+ 

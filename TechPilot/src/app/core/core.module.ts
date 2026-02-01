@@ -1,8 +1,9 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from './services/auth.service';
+// import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
+import { AuthService } from '../features/auth/auth.service';
 
 @NgModule({
   declarations: [],

@@ -1,32 +1,32 @@
-import { Injectable } from "@angular/core";
+// import { Injectable } from "@angular/core";
 
-@Injectable({ providedIn: 'root' })
-export class AuthService {
+// @Injectable({ providedIn: 'root' })
+// export class AuthService {
 
-  private roles: Record<string, string> = { 
-    admin: 'Admin', 
-    manager: 'Manager', 
-    user: 'User' 
-  };
+//   private roles: Record<string, string> = { 
+//     admin: 'Admin', 
+//     manager: 'Manager', 
+//     user: 'User' 
+//   };
 
-  login(username: string, password: string): boolean {
-    if (this.roles[username]) { 
-      localStorage.setItem('token', 'mock-token');
-      localStorage.setItem('role', this.roles[username]);
-      return true;
-    }
-    return false;
-  }
+//   login(username: string, password: string): boolean {
+//     if (this.roles[username]) { 
+//       localStorage.setItem('token', 'mock-token');
+//       localStorage.setItem('role', this.roles[username]);
+//       return true;
+//     }
+//     return false;
+//   }
 
-  logout() { 
-    localStorage.clear(); 
-  }
+//   logout() { 
+//     localStorage.clear(); 
+//   }
 
-  isLoggedIn(): boolean { 
-    return !!localStorage.getItem('token'); 
-  }
+//   isLoggedIn(): boolean { 
+//     return !!localStorage.getItem('token'); 
+//   }
 
-  getRole(): string { 
-    return localStorage.getItem('role')!; 
-  }
-}
+//   getRole(): string { 
+//     return localStorage.getItem('role')!; 
+//   }
+// }
